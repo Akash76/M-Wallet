@@ -4,13 +4,11 @@ import AppRoutes from './AppRoutes';
 // import { AppContext } from './utils/context';
 import { useNavigate } from 'react-router-dom';
 import './App.css';
-// const {
-//   PublicClientApplication,
-//   CryptoProvider,
-// } = require("@azure/msal-node");
-import * as msal from "@azure/msal-node";
-
-const { msalConfig, REDIRECT_URI } = require('./authConfig');
+import { msalConfig } from "./authConfig"
+const {
+  PublicClientApplication,
+  CryptoProvider,
+} = require("@azure/msal-node");
 
 function App() {
   const navigate = useNavigate()

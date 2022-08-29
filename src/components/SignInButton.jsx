@@ -7,9 +7,6 @@ import Button from "react-bootstrap/Button"
 import { useNavigate } from 'react-router-dom';
 import { useIsAuthenticated } from "@azure/msal-react";
 
-/**
- * Renders a drop down button with child buttons for logging in with a popup or redirect
- */
 export const SignInButton = () => {
     const { instance } = useMsal();
     const navigate = useNavigate();

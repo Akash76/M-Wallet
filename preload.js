@@ -13,7 +13,7 @@ const { protectedResources } = require('./authConfig')
  */
 contextBridge.exposeInMainWorld("renderer", {
     sendLoginMessage: () => {
-        return ipcRenderer.send(IPC_MESSAGES.LOGIN);
+        return ipcRenderer.invoke(IPC_MESSAGES.LOGIN);
     },
     sendSignoutMessage: () => {
         ipcRenderer.send(IPC_MESSAGES.LOGOUT);
@@ -25,9 +25,12 @@ contextBridge.exposeInMainWorld("renderer", {
         ipcRenderer.send(IPC_MESSAGES.GET_MAIL);
     },
     sendAccount: () => {
-        ipcRenderer.send("SEND_ACCOUNT")
+        return ipcRenderer.invoke("SEND_ACCOUNT")
     },
     test: async () => "Ok",
+    testing: () => {
+        return ipcRenderer.invoke("TEST")
+    },
     startUiManager: () => {
         /**
          * The UI Manager is declared within this API because

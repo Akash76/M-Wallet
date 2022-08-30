@@ -42,7 +42,7 @@ app.on("window-all-closed", () => {
 });
 
 // Event handlers
-ipcMain.on(IPC_MESSAGES.LOGIN, async () => {
+ipcMain.handle(IPC_MESSAGES.LOGIN, async () => {
     const account = await authProvider.login();
     console.log(account)
     // await mainWindow.loadFile(path.join(__dirname, "./index.html"));
@@ -55,9 +55,14 @@ ipcMain.on(IPC_MESSAGES.LOGOUT, async () => {
     await mainWindow.loadFile(path.join(__dirname, "./index.html"));
 });
 
-ipcMain.on("SEND_ACCOUNT", async () => {
+ipcMain.handle("SEND_ACCOUNT", async () => {
     const account = await authProvider.account;
+    console.log(account)
     return account;
+})
+
+ipcMain.handle('TEST', async () => {
+    return "Testing return"
 })
 
 if (isDev) {

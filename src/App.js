@@ -8,7 +8,7 @@ export default function App() {
     }
 
     const test = async () => {
-        console.log(await renderer.test())
+        console.log(await renderer.sendAccount())
     }
 
     return (

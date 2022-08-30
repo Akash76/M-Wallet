@@ -9,7 +9,7 @@ const {
 } = require("@azure/msal-node");
 const { BrowserWindow } = require("electron");
 const CustomProtocolListener = require("./CustomProtocolListener");
-const { msalConfig, REDIRECT_URI } = require('./authConfig')
+const { msalConfig, REDIRECT_URI } = require('./app/authConfig')
 
 class AuthProvider {
     clientApplication;

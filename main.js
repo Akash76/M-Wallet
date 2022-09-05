@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const path = require("path");
-const { app, ipcMain, BrowserWindow } = require("electron");
+const { app, ipcMain, BrowserWindow, session } = require("electron");
 const { IPC_MESSAGES } = require("./app/constants");
 const isDev = !app.isPackaged;
 const AuthProvider = require("./app/AuthProvider");
@@ -38,8 +38,12 @@ ipcMain.handle(IPC_MESSAGES.LOGIN, async () => {
 });
 
 ipcMain.on(IPC_MESSAGES.LOGOUT, async () => {
-    await authProvider.logout();
-    await mainWindow.loadFile(path.join(__dirname, "./index.html"));
+    try {
+        await authProvider.logout();
+        await session.defaultSession.clearStorageData();
+    } catch (error) {
+        console.log(error.message)
+    }
 });
 
 ipcMain.handle("SEND_ACCOUNT", async () => {

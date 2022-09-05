@@ -11,9 +11,6 @@ contextBridge.exposeInMainWorld("renderer", {
     sendSeeProfileMessage: () => {
         ipcRenderer.send(IPC_MESSAGES.GET_PROFILE);
     },
-    sendReadMailMessage: () => {
-        ipcRenderer.send(IPC_MESSAGES.GET_MAIL);
-    },
     sendAccount: () => {
         return ipcRenderer.invoke("SEND_ACCOUNT")
     },

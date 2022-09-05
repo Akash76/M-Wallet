@@ -11,11 +11,16 @@ export default function App() {
         console.log(await renderer.sendAccount())
     }
 
+    const handleLogout = async () => {
+        await renderer.sendSignoutMessage()
+    }
+
     return (
         <>
             <h1>I am App Component!!!</h1>
             <button onClick={() => handleLogin()}>SignIn</button>
             <button onClick={() => test()}>Test</button>
+            <button onClick={() => handleLogout()}>SignOut</button>
         </>
     )
 }

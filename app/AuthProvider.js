@@ -1,8 +1,3 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-
 const {
     PublicClientApplication,
     CryptoProvider,
@@ -21,27 +16,16 @@ class AuthProvider {
     customFileProtocolName;
 
     constructor() {
-        /**
-         * Initialize a public client application. For more information, visit:
-         * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/docs/initialize-public-client-application.md
-         */
         this.clientApplication = new PublicClientApplication(msalConfig);
         this.account = null;
 
-        // Initialize CryptoProvider instance
         this.cryptoProvider = new CryptoProvider();
 
-        /**
-         * To demonstrate best security practices, this Electron sample application makes use of
-         * a custom file protocol instead of a regular web (https://) redirect URI in order to
-         * handle the redirection step of the authorization flow, as suggested in the OAuth2.0 specification for Native Apps.
-         */
         this.customFileProtocolName = REDIRECT_URI.split(":")[0];
 
         this.setRequestObjects();
     }
 
-    // Creates a "popup" window for interactive authentication
     static createAuthWindow() {
         return new BrowserWindow({
             width: 400,
@@ -49,9 +33,6 @@ class AuthProvider {
         });
     }
 
-    /**
-     * Initialize request objects used by this AuthModule.
-     */
     setRequestObjects() {
         const requestScopes = ["User.Read"];
 
@@ -67,23 +48,29 @@ class AuthProvider {
         };
 
         this.pkceCodes = {
-            challengeMethod: "S256", // Use SHA256 Algorithm
-            verifier: "", // Generate a code verifier for the Auth Code Request first
-            challenge: "", // Generate a code challenge from the previously generated code verifier
+            challengeMethod: "S256",
+            verifier: "",
+            challenge: "",
         };
     }
 
     async login() {
-        const authResult = await this.getTokenInteractive(this.authCodeUrlParams);
-        return this.handleResponse(authResult);
+        try {
+            const authResult = await this.getTokenInteractive(this.authCodeUrlParams);
+            return this.handleResponse(authResult);
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
     async logout() {
-        // if (this.account) {
-        await this.clientApplication.getTokenCache().removeAccount(this.account);
-        this.clientApplication.clearCache();
-        this.account = null;
-        // }
+        try {
+            await this.clientApplication.getTokenCache().removeAccount(this.account);
+            this.clientApplication.clearCache();
+            this.account = null;
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
     async getToken(tokenRequest) {

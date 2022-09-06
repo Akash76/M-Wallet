@@ -1,9 +1,9 @@
 import React from 'react';
+import './App.css';
 
 export default function App() {
     const handleLogin = async () => {
         const account = await renderer.sendLoginMessage();
-        // const account = await renderer.sendAccount();
         console.log(account)
     }
 

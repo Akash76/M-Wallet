@@ -1,0 +1,31 @@
+.land {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.land h2 {
+    color: antiquewhite;
+}
+
+.login-button {
+    display: flex;
+    flex-direction: row;
+    
+    width: 250px;
+    height: 35px;
+    border-radius: 10px;
+    border-width: 0px;
+    /* background-color: transparent; */
+}
+
+.ms-logo-svg {
+    width: 20px;
+    height: 20px;
+}
+  
+.ms-logo {
+    
+}

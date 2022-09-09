@@ -1,11 +1,26 @@
 import React from 'react'
 import Button from "react-bootstrap/Button";
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from "../utils/context";
 import "./LandingPage.css"
 
 function LandingPage() {
+    const { setUser, setAddress, address } = useAppContext();
+    let navigate = useNavigate()
+
     const handleLogin = async () => {
         const account = await renderer.sendLoginMessage();
-        console.log(account)
+        console.log(account.username)
+        setUser(account.username)
+        const userInfo = await renderer.getUserInfo(account.username)
+        if (!userInfo) {
+            const response = await renderer.createWallet(account.username)
+            setAddress(response.address)
+        } else {
+            setAddress(userInfo.address)
+        }
+        console.log("Address in Land", address)
+        navigate('/home')
     }
 
     const MsLogo = () => {

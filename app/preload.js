@@ -14,8 +14,13 @@ contextBridge.exposeInMainWorld("renderer", {
     sendAccount: () => {
         return ipcRenderer.invoke("SEND_ACCOUNT")
     },
-    test: async () => "Ok",
-    testing: () => {
-        return ipcRenderer.invoke("TEST")
+    createWallet: (userInfo) => {
+        return ipcRenderer.invoke("CREATE_WALLET", userInfo)
+    },
+    getUserInfo: (user, path) => {
+        return ipcRenderer.invoke("GET_USER_INFO", user, path)
+    },
+    getBalance: (address, network) => {
+        return ipcRenderer.invoke("GET_BALANCES", address, network)
     }
 });

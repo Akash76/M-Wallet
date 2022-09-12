@@ -5,13 +5,10 @@ const { app, ipcMain, BrowserWindow, session } = require("electron");
 const { IPC_MESSAGES } = require("./app/constants");
 const isDev = !app.isPackaged;
 const AuthProvider = require("./app/AuthProvider");
-const {
-    createWallet,
-    getBalances,
-    getUserInfo
-} = require('./app/wallet')
+const { WalletUtil } = require('./app/wallet')
 
 const authProvider = new AuthProvider();
+const wallet = new WalletUtil();
 
 function createWindow() {
     let mainWindow = new BrowserWindow({
@@ -57,7 +54,7 @@ ipcMain.handle("SEND_ACCOUNT", async () => {
 
 ipcMain.handle("CREATE_WALLET", async (_, userInfo) => {
     try {
-        const response = await createWallet(userInfo);
+        const response = await wallet.createWallet(userInfo);
         return response;
     } catch (error) {
         console.log(error)
@@ -66,21 +63,25 @@ ipcMain.handle("CREATE_WALLET", async (_, userInfo) => {
 
 ipcMain.handle("GET_USER_INFO", async (_, user, path) => {
     try {
-        const info = await getUserInfo(user, path);
+        const info = await wallet.getUserInfo(user, path);
         return info;
     } catch (error) {
         console.log(error)
     }
 });
 
-ipcMain.handle("GET_BALANCES", async (_, address, network) => {
+ipcMain.handle("GET_BALANCES", async (_, network) => {
     try {
-        const balance = await getBalances(address, network);
+        const balance = await wallet.getBalances(network);
         return balance
     } catch (error) {
         console.log(error)
     }
 });
+
+ipcMain.handle("GET_ADDRESS", (_) => {
+    return wallet.address;
+})
 
 if (isDev) {
     require('electron-reload')(__dirname, {

@@ -7,25 +7,55 @@
 }
 
 .land h2 {
-    color: antiquewhite;
+    color: rgb(255, 249, 242);
+    margin-bottom: 50px;
+}
+
+.land-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 300px;
+    backdrop-filter: blur( 5.0px );
+    -webkit-backdrop-filter: blur( 5.0px );
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);   
 }
 
 .login-button {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.125);   
+    border-radius: 5px;
+}
+
+.login-text {
     display: flex;
     flex-direction: row;
-    
-    width: 250px;
+    justify-content: space-around;
+    width: 200px;
     height: 35px;
     border-radius: 10px;
     border-width: 0px;
-    /* background-color: transparent; */
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.login-text p {
+    margin: 0;
+    color: #fff;
+    font-weight: 400;
+    font-size: medium;
 }
 
 .ms-logo-svg {
     width: 20px;
     height: 20px;
 }
-  
+
 .ms-logo {
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

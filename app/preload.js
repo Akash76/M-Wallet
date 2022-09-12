@@ -20,7 +20,10 @@ contextBridge.exposeInMainWorld("renderer", {
     getUserInfo: (user, path) => {
         return ipcRenderer.invoke("GET_USER_INFO", user, path)
     },
-    getBalance: (address, network) => {
-        return ipcRenderer.invoke("GET_BALANCES", address, network)
+    getBalance: (network) => {
+        return ipcRenderer.invoke("GET_BALANCES", network)
+    },
+    getAddress: () => {
+        return ipcRenderer.invoke("GET_ADDRESS")
     }
 });

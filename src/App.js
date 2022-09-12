@@ -15,10 +15,13 @@ export default function App() {
 
     const load = async () => {
         const account = await renderer.sendAccount()
-        console.log("App:::", account)
         if (!account) {
             navigate("/")
         } else {
+            setUser(account.username)
+            const userInfo = await renderer.getUserInfo(account.username)
+            let username = userInfo.user
+            setUser(username)
             navigate('/home')
         }
     }

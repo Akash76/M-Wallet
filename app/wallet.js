@@ -1,43 +1,37 @@
 require('dotenv').config()
 const { Wallet, providers, utils } = require('ethers');
-const { CosmosClient } = require('@azure/cosmos')
-const connectionString = process.env.COSMOS_CONNECTION_STRING
-const databaseId = "micw-dev";
+const { CosmosClient } = require('@azure/cosmos');
+const { ClientSecretCredential } = require("@azure/identity");
+const { SecretClient } = require("@azure/keyvault-secrets");
 
+const vaultName = "micwkv";
+const url = `https://${vaultName}.vault.azure.net`;
+const credential = new ClientSecretCredential(process.env.TENENT_ID, process.env.CLIENT_ID, process.env.CLIENT_SECRET);
+const akvClient = new SecretClient(url, credential);
+
+const connectionString = process.env.COSMOS_CONNECTION_STRING
 const client = new CosmosClient(connectionString);
+const databaseId = "micw-dev";
 const db = client.database(databaseId);
 
 class WalletUtil {
     address;
 
-    createWallet = async (userInfo) => {
+    saveSecretsToVault = async (phrase, privKey, pathIndex, userInfo) => {
         try {
-            const wallet = new Wallet.createRandom();
+            let user = userInfo.replace("@", "-").replace(".", "-")
+            let phraseKvName = `${user}-phrase-${pathIndex}`
+            let privKeyKvName = `${user}-priv-${pathIndex}`
+            await akvClient.setSecret(phraseKvName, phrase);
+            await akvClient.setSecret(privKeyKvName, privKey);
 
-            // const vaultResponse = await saveSecretsToVault(mnemonic, privKey)
-
-            let cosmosItem = {
-                user: userInfo,
-                phraseReference: wallet.mnemonic.phrase,
-                address: wallet.address,
-                pubKey: wallet.publicKey,
-                mnemonicPath: wallet.mnemonic.path,
-                privKeyReference: wallet.privateKey
-            }
-
-            const response = await saveToCosmos(cosmosItem);
-            this.address = wallet.address
-            console.log("Wallet created for", userInfo)
             return {
-                username: response.user
+                phraseReference: phraseKvName,
+                privReference: privKeyKvName
             }
         } catch (error) {
             console.log(error)
         }
-    }
-
-    saveSecretsToVault = async () => {
-
     }
 
     saveToCosmos = async (cosmosItem) => {
@@ -46,6 +40,33 @@ class WalletUtil {
         try {
             const response = await container.items.create(cosmosItem)
             return response
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    createWallet = async (userInfo) => {
+        try {
+            const wallet = new Wallet.createRandom();
+
+            const pathIndex = wallet.mnemonic.path.split('/')[5]
+            const vaultResponse = await this.saveSecretsToVault(wallet.mnemonic.phrase, wallet.privateKey, pathIndex, userInfo)
+
+            let cosmosItem = {
+                user: userInfo,
+                phraseReference: vaultResponse.phraseReference,
+                address: wallet.address,
+                pubKey: wallet.publicKey,
+                mnemonicPath: wallet.mnemonic.path,
+                privKeyReference: vaultResponse.privReference
+            }
+
+            const response = await this.saveToCosmos(cosmosItem);
+            this.address = wallet.address
+            console.log("Wallet created for", userInfo)
+            return {
+                username: response.user
+            }
         } catch (error) {
             console.log(error)
         }

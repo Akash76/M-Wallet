@@ -9,18 +9,16 @@ function LandingPage() {
     let navigate = useNavigate()
 
     const handleLogin = async () => {
-        const account = await renderer.sendLoginMessage();
-        setUser(account.username)
-        const userInfo = await renderer.getUserInfo(account.username)
-        console.log("UINFO:", userInfo.address)
-        if (!userInfo) {
-            const response = await renderer.createWallet(account.username)
-            setAddress(response.address)
-        } else {
-            setAddress(userInfo.address)
+        try {
+            const account = await renderer.sendLoginMessage();
+            const userInfo = await renderer.getUserInfo(account.username)
+            if (!userInfo) {
+                const response = await renderer.createWallet(account.username)
+            }
+            navigate('/home')
+        } catch (error) {
+            console.log(error)
         }
-        console.log("Address in Land", address)
-        navigate('/home')
     }
 
     const MsLogo = () => {

@@ -36,10 +36,11 @@ function LandingPage() {
                 <div style={{
                     display: 'flex',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    paddingLeft: "27%"
                 }}>
                     <p>
-                        Connect with Microsoft
+                        Connect
                     </p>
                 </div>
             </div>

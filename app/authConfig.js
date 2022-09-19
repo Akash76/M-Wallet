@@ -1,10 +1,13 @@
+require('dotenv').config()
+
+const { CLIENT_ID } = process.env
 const AAD_ENDPOINT_HOST = "https://login.microsoftonline.com/";
-const REDIRECT_URI = "msal81707ac9-72cf-4690-b321-1403b6659e99://auth";
+const REDIRECT_URI = `msal${CLIENT_ID}://auth`;
 
 const msalConfig = {
     auth: {
-        clientId: "81707ac9-72cf-4690-b321-1403b6659e99",
-        authority: `${AAD_ENDPOINT_HOST}efbc4aa4-4271-4434-a852-b3ae024dd09d`,
+        clientId: CLIENT_ID,
+        authority: `${AAD_ENDPOINT_HOST}common`,
     },
     system: {
         loggerOptions: {

@@ -33,7 +33,7 @@
 .login-text {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    /* justify-content: space-between; */
     width: 200px;
     height: 35px;
     border-radius: 10px;
@@ -58,4 +58,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    /* float: left */
 }

@@ -14,6 +14,7 @@ function createWindow() {
     let mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        icon: path.join(__dirname, 'MiCW.png'),
         webPreferences: {
             nodeIntegration: false,
             worldSafeExecuteJavaScript: true,

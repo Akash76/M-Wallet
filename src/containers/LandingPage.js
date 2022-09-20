@@ -50,7 +50,7 @@ function LandingPage() {
     return (
         <div className='land'>
             <div className='land-content'>
-                <h2>MiCW</h2>
+                <h2>M-Wallet</h2>
                 <Button
                     size="lg"
                     className="login-button"
